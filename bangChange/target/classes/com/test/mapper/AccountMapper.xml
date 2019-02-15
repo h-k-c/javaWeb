@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mapper.AccountMapper">
+    <select id="existsCardNo" resultType="integer">
+        select count(*)
+        from account
+        where cardno=#{cardNo}
+    </select>
+
+    <select id="queryByCardNoPwd" resultType="com.test.pojo.Account">
+        select id,cardNo,password,status
+        from account
+        where cardNo=#{cardNo} and password=#{password}
+    </select>
+
+    <select id="querybalance" resultType="double">
+        select balance
+        from account
+        where cardNo=#{cardNo}
+    </select>
+
+    <select id="freeZon" resultType="Integer">
+        select count(*)
+        from account
+        where cardNo=#{cardNo} and status=1
+    </select>
+    <select id="balanceEnough" resultType="Integer">
+        select count(*)
+        from  account
+        where cardNo=#{cardNo} and balance-#{transactionAmount}>=0
+    </select>
+    <update id="plusmoney">
+        update account
+        set balance=balance+#{transactionAmount}
+        where cardNo=#{cardNo}
+    </update>
+
+    <update id="minusmoney">
+        update account
+        set balance=balance-#{transactionAmount}
+        where cardNo=#{cardNo}
+    </update>
+
+    <update id="updatepassword">
+        update account
+        set password=#{resultpassword}
+        where cardNo=#{cardNo}
+    </update>
+</mapper>
